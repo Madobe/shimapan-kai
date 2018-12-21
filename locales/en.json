@@ -1,0 +1,18 @@
+{
+  "commands": {
+    "com": {
+      "errors": {
+        "invalid-action": "Invalid action.",
+        "no-action": "You must provide an action (add, remove, edit, list).",
+        "no-text": "You must provide response text.",
+        "no-trigger": "You must provide a trigger phrase.",
+        "trigger-exists": "The trigger specified already exists.",
+        "trigger-not-exists": "The trigger specified does not exist."
+      },
+      "list": "The currently registered custom commands are:\n```\n{0}\n```",
+      "trigger-added": "`{0}` was added.",
+      "trigger-edited": "`{0}` was modified.",
+      "trigger-removed": "`{0}` was removed."
+    }
+  }
+}
