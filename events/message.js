@@ -1,7 +1,7 @@
 /**
  * This event runs every time a message is received by the bot.
  */
-const { getGuildSettings, getCustomCommands } = require("../utils/storage");
+const { getGuildSettings, getGuildCommands } = require("../utils/storage");
 
 module.exports = async (client, message) => {
   if (message.author.bot) return;
@@ -31,7 +31,7 @@ module.exports = async (client, message) => {
         return message.channel.send("Something went wrong.");
       }
     } else {
-      const commands = getCustomCommands(message.guild.id);
+      const commands = await getGuildCommands(message.guild.id);
 
       if (!commands[name]) return;
 
