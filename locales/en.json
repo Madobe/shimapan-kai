@@ -13,6 +13,7 @@
       "trigger-added": "`{0}` was added.",
       "trigger-edited": "`{0}` was modified.",
       "trigger-removed": "`{0}` was removed."
-    }
+    },
+    "ping": "Pong."
   }
 }
