@@ -1,6 +1,11 @@
 const storage = require("node-persist");
 
-const allowedSettings = ["announcements-channel"];
+const allowedSettings = [
+  "prefix",
+  "announcements-channel",
+  "admin-role",
+  "mod-role"
+];
 
 /**
  * Model for guild settings.

@@ -7,12 +7,13 @@ const { i18n: t } = require("../utils/locale");
 exports.run = async ({ message, args }) => {
   const [name] = args;
 
-  if (!name)
+  if (!name) {
     return message.channel.send(
       await t(message.guild.id, "commands.role.errors.no-name")
     );
+  }
 
-  const roleID = message.guild.roles.find("name", name).id;
+  const roleID = message.guild.roles.find(r => r.name === name).id;
 
   message.channel.send(roleID);
 };

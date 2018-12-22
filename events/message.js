@@ -3,6 +3,8 @@
  */
 const Settings = require("../models/settings");
 const Commands = require("../models/commands");
+const isAuthorized = require("../utils/isAuthorized");
+const { i18n: t } = require("../utils/locale");
 
 module.exports = async (client, message) => {
   if (message.author.bot) return;
@@ -25,11 +27,27 @@ module.exports = async (client, message) => {
         );
       }
 
+      if (
+        !isAuthorized(
+          command.conf.permLevel,
+          message.guild.id,
+          message.author.id,
+          message.guild.ownerID,
+          message.member.roles
+        )
+      ) {
+        return message.channel.send(
+          await t(message.guild.id, "events.message.errors.lacking-perms")
+        );
+      }
+
       try {
         await command.run({ client, message, args });
       } catch (e) {
         console.log(e);
-        return message.channel.send("Something went wrong.");
+        return message.channel.send(
+          await t(message.guild.id, "events.message.errors.generic")
+        );
       }
     } else {
       const commands = await Commands.build(message.guild.id);

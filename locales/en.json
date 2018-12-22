@@ -72,5 +72,13 @@
         "» **Avatar**: {8}"
       ]
     }
+  },
+  "events": {
+    "message": {
+      "errors": {
+        "generic": "Something went wrong.",
+        "lacking-perms": "Insufficient permissions to use this command."
+      }
+    }
   }
 }
