@@ -1,44 +1,30 @@
-const { getGuildCommands, setGuildCommands } = require("../utils/storage");
+const Commands = require("../models/commands");
 const { i18n } = require("../utils/locale");
 
 const addCommand = async (message, id, commands, trigger, text) => {
-  if (commands[trigger])
-    return message.channel.send(
-      await i18n(id, "commands.com.errors.trigger-exists")
-    );
-
-  commands[trigger] = text.join(" ");
-  message.channel.send(await i18n(id, "commands.com.trigger-added", trigger));
-
-  return setGuildCommands(id, commands);
+  commands.addCommand(trigger, text, async () => {
+    message.channel.send(await i18n(id, "commands.com.trigger-added", trigger));
+  });
 };
 
 const removeCommand = async (message, id, commands, trigger) => {
-  if (!commands[trigger])
-    return message.channel.send(
-      await i18n(id, "commands.com.errors.trigger-not-exists")
+  commands.removeCommand(trigger, async () => {
+    message.channel.send(
+      await i18n(id, "commands.com.trigger-removed", trigger)
     );
-
-  delete commands[trigger];
-  message.channel.send(await i18n(id, "commands.com.trigger-removed", trigger));
-
-  return setGuildCommands(id, commands);
+  });
 };
 
 const editCommand = async (message, id, commands, trigger, text) => {
-  if (!commands[trigger])
-    return message.channel.send(
-      await i18n(id, "commands.com.errors.trigger-not-exists")
+  commands.editCommand(trigger, text, async () => {
+    message.channel.send(
+      await i18n(id, "commands.com.trigger-edited", trigger)
     );
-
-  commands[trigger] = text.join(" ");
-  message.channel.send(await i18n(id, "commands.com.trigger-edited", trigger));
-
-  return setGuildCommands(id, commands);
+  });
 };
 
 const listCommands = async (message, id, commands) => {
-  const keys = Object.keys(commands);
+  const keys = commands.toArray();
   let output = "";
 
   for (let i = 0; i < keys.length; i++) {
@@ -72,7 +58,7 @@ exports.run = async ({ message, args }) => {
       await i18n(guildId, "commands.com.errors.invalid-action")
     );
 
-  const commands = (await getGuildCommands(message.guild.id)) || {};
+  const commands = await Commands.build(message.guild.id, message);
 
   switch (action) {
   case "add":
