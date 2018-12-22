@@ -1,15 +1,24 @@
+const searchMembers = require("../utils/searchMembers");
+const { i18n: t } = require("../utils/locale");
+
 /**
  * Returns the user ID for the given user.
  * @param {string} name The username to look up. Exact match.
  */
 exports.run = async ({ message, args }) => {
-  const [name] = args;
+  const [search] = args;
 
-  if (!name) return message.channel.send("No user to look up specified.");
+  if (!search)
+    return message.channel.send(
+      await t(message.guild.id, "commands.user.errors.no-search")
+    );
 
-  const userID = message.guild.members.find(
-    member => member.user.username == name
-  ).id;
+  const userID = searchMembers(message.guild.members, search)[0];
+
+  if (!userID)
+    return message.channel.send(
+      await t(message.guild.id, "commands.user.errors.no-matches")
+    );
 
   message.channel.send(userID);
 };

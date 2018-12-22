@@ -1,19 +1,28 @@
+const { i18n: t } = require("../utils/locale");
+
 /**
  * Returns info about the current guild.
  */
 exports.run = async ({ message }) => {
-  const guild = message.guild;
-  const onlineMembers = guild.members.filter(
+  const onlineMembers = message.guild.members.filter(
     m => m.presence.status !== "offline"
   ).size;
 
-  message.channel.send(`**${guild.name}** (ID:${guild.id}
-» **Server Owner**: ${guild.owner.user.tag}
-» **Region**: ${guild.region}
-» **Member Count**: ${onlineMembers} online out of ${guild.memberCount}
-» **Channel Count**: ${guild.channels.size}
-» **Verification Level**: ${guild.verificationLevel}
-» **Server Icon**: ${guild.iconURL}`);
+  message.channel.send(
+    await t(
+      message.guild.id,
+      "commands.serverinfo.output",
+      message.guild.name,
+      message.guild.id,
+      message.guild.owner.user.tag,
+      message.guild.region,
+      onlineMembers,
+      message.guild.memberCount,
+      message.guild.channels.size,
+      message.guild.verificationLevel,
+      message.guild.iconURL
+    )
+  );
 };
 
 exports.conf = {

@@ -20,6 +20,22 @@
         "no-amount": "You must specify the number of messages to delete."
       }
     },
+    "role": {
+      "errors": {
+        "no-name": "You must provide a role name to search."
+      }
+    },
+    "serverinfo": {
+      "output": [
+        "**{0}** (ID:{1})",
+        "» **Server Owner**: {2}",
+        "» **Region**: {3}",
+        "» **Member Count**: {4} online out of {5}",
+        "» **Channel Count**: {6}",
+        "» **Verification Level**: {7}",
+        "» **Server Icon**: {8}"
+      ]
+    },
     "set": {
       "errors": {
         "no-key": "You must provide a setting to change the value of.",
@@ -27,13 +43,34 @@
       },
       "option": "Option",
       "value": "Value",
-      "success": "`{0}` assigned a value of `{1}`."
+      "success": "`{0}` assigned a value of `{1}`.",
+      "failure": "The setting you tried to set is invalid. Did you misspell it?"
     },
     "unset": {
       "errors": {
         "no-key": "You must provide a setting to remove the value of."
       },
       "success": "`{0}` unset."
+    },
+    "user": {
+      "errors": {
+        "no-matches": "No users matching the provided string could be found.",
+        "no-search": "You must provide an ID or string to search with."
+      }
+    },
+    "userinfo": {
+      "errors": {
+        "no-matches": "No matching users could be found. Searches are performed via ID, username, tag, or display name."
+      },
+      "output": [
+        "**{0}**#{1} (ID:**{2}**)",
+        "» **Nickname**: {3}",
+        "» **Roles**: {4}",
+        "» **Account Creation**: {5}",
+        "» **Join Date**: {6}",
+        "» **Join Order**: {7}",
+        "» **Avatar**: {8}"
+      ]
     }
   }
 }

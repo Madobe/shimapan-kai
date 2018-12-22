@@ -43,54 +43,42 @@ class Commands {
    * Adds a custom command for the guild. Fails if it already exists.
    * @param {string} trigger The command name to be used.
    * @param {string} text The response string.
-   * @param {Function} callback A callback that fires on success.
+   * @returns {boolean} Whether the addition succeeded or not.
    */
-  async addCommand(trigger, text, callback) {
-    if (this.commands[trigger]) {
-      return this.message.channel.send(
-        await i18n(this.id, "commands.com.errors.trigger-exists")
-      );
-    }
+  addCommand(trigger, text) {
+    if (this.commands[trigger]) return false;
 
     this.commands[trigger] = text;
     this.save();
-    callback();
+    return true;
   }
 
   /**
    * Edits an existing custom command for the guild. Fails if it doesn't exist.
    * @param {string} trigger The command name to edit the response of.
    * @param {string} text The new response string.
-   * @param {Function} callback A callback that fires on success.
+   * @returns {boolean} Whether the modification succeeded or not.
    */
-  async editCommand(trigger, text, callback) {
-    if (!this.commands[trigger]) {
-      return this.message.channel.send(
-        await i18n(this.id, "commands.com.errors.trigger-not-exists")
-      );
-    }
+  editCommand(trigger, text) {
+    if (!this.commands[trigger]) return false;
 
     this.commands[trigger] = text;
     this.save();
-    callback();
+    return true;
   }
 
   /**
    * Removes an existing custom command for the guild. Fails if it doesn't
    * exist.
    * @param {string} trigger The command name to remove.
-   * @param {Function} callback A callback that fires on success.
+   * @returns {boolean} Whether the deletion succeeded or not.
    */
-  async removeCommand(trigger, callback) {
-    if (!this.commands[trigger]) {
-      return this.message.channel.send(
-        await i18n(this.id, "commands.com.errors.trigger-not-exists")
-      );
-    }
+  removeCommand(trigger) {
+    if (!this.commands[trigger]) return false;
 
     delete this.commands[trigger];
     this.save();
-    callback();
+    return true;
   }
 
   /**

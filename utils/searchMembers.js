@@ -6,6 +6,15 @@
  * @returns {Array<Snowflake>} An array of all the user IDs that matched.
  */
 module.exports = (members, search) => {
+  const exactMatches = members.filter(
+    m =>
+      m.user.username === search ||
+      m.user.tag === search ||
+      m.displayName === search
+  );
+
+  if (exactMatches.size) return [exactMatches.first().id];
+
   const matchingUsernames = members
     .filter(m => m.user.username.indexOf(search) !== -1)
     .map(m => m.id);
@@ -13,7 +22,7 @@ module.exports = (members, search) => {
     .filter(m => m.user.tag.indexOf(search) !== -1)
     .map(m => m.id);
   const matchingNicks = members
-    .filter(m => m.displayName.indexOf(search))
+    .filter(m => m.displayName.indexOf(search) !== -1)
     .map(m => m.id);
 
   return [

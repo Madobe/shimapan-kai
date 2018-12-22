@@ -1,5 +1,5 @@
 const Settings = require("../models/settings");
-const { i18n } = require("../utils/locale");
+const { i18n: t } = require("../utils/locale");
 
 /**
  * Adds spaces to the string until it reaches the target length.
@@ -22,11 +22,11 @@ exports.run = async ({ message, args }) => {
 
   if (!key) {
     return message.channel.send(
-      i18n(message.guild.id, "commands.set.errors.no-key")
+      await t(message.guild.id, "commands.set.errors.no-key")
     );
   } else if (key !== "list" && !value) {
     return message.channel.send(
-      i18n(message.guild.id, "commands.set.errors.no-value")
+      await t(message.guild.id, "commands.set.errors.no-value")
     );
   }
 
@@ -37,11 +37,11 @@ exports.run = async ({ message, args }) => {
     output += separator;
 
     const leftHeader = pad(
-      await i18n(message.guild.id, "commands.set.option"),
+      await t(message.guild.id, "commands.set.option"),
       25
     );
     const rightHeader = pad(
-      await i18n(message.guild.id, "commands.set.value"),
+      await t(message.guild.id, "commands.set.value"),
       25
     );
 
@@ -60,10 +60,13 @@ exports.run = async ({ message, args }) => {
     return message.channel.send(output);
   }
 
-  settings.set(key, value);
-  message.channel.send(
-    await i18n(message.guild.id, "commands.set.success", key, value)
-  );
+  if (await settings.set(key, value)) {
+    message.channel.send(
+      await t(message.guild.id, "commands.set.success", key, value)
+    );
+  } else {
+    message.channel.send(await t(message.guild.id, "commands.set.failure"));
+  }
 };
 
 exports.conf = {

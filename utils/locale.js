@@ -21,5 +21,7 @@ exports.i18n = async (id, path, ...inserts) => {
     response = response[keys[i]];
   }
 
+  if (typeof response === "object") response = response.join("\n");
+
   return format(response, ...inserts);
 };

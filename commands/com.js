@@ -1,5 +1,5 @@
 const Commands = require("../models/commands");
-const { i18n } = require("../utils/locale");
+const { i18n: t } = require("../utils/locale");
 
 /**
  * Adds a command.
@@ -10,9 +10,13 @@ const { i18n } = require("../utils/locale");
  * @param {string} text The response string.
  */
 const addCommand = async (message, id, commands, trigger, text) => {
-  commands.addCommand(trigger, text, async () => {
-    message.channel.send(await i18n(id, "commands.com.trigger-added", trigger));
-  });
+  if (commands.addCommand(trigger, text)) {
+    message.channel.send(await t(id, "commands.com.trigger-added", trigger));
+  } else {
+    message.channel.send(
+      await t(this.id, "commands.com.errors.trigger-exists")
+    );
+  }
 };
 
 /**
@@ -23,11 +27,13 @@ const addCommand = async (message, id, commands, trigger, text) => {
  * @param {string} trigger The custom command name.
  */
 const removeCommand = async (message, id, commands, trigger) => {
-  commands.removeCommand(trigger, async () => {
+  if (commands.removeCommand(trigger)) {
+    message.channel.send(await t(id, "commands.com.trigger-removed", trigger));
+  } else {
     message.channel.send(
-      await i18n(id, "commands.com.trigger-removed", trigger)
+      await t(this.id, "commands.com.errors.trigger-not-exists")
     );
-  });
+  }
 };
 
 /**
@@ -39,11 +45,13 @@ const removeCommand = async (message, id, commands, trigger) => {
  * @param {string} text The response string.
  */
 const editCommand = async (message, id, commands, trigger, text) => {
-  commands.editCommand(trigger, text, async () => {
+  if (commands.editCommand(trigger, text)) {
+    message.channel.send(await t(id, "commands.com.trigger-edited", trigger));
+  } else {
     message.channel.send(
-      await i18n(id, "commands.com.trigger-edited", trigger)
+      await t(this.id, "commands.com.errors.trigger-not-exists")
     );
-  });
+  }
 };
 
 /**
@@ -61,7 +69,7 @@ const listCommands = async (message, id, commands) => {
     if (i % 4 == 3 && i !== keys.length - 1) output += "\n";
   }
 
-  message.channel.send(await i18n(id, "commands.com.list", output));
+  message.channel.send(await t(id, "commands.com.list", output));
 };
 
 /**
@@ -78,19 +86,19 @@ exports.run = async ({ message, args }) => {
 
   if (!action)
     return message.channel.send(
-      await i18n(guildId, "commands.com.errors.no-action")
+      await t(guildId, "commands.com.errors.no-action")
     );
   else if (action !== "list" && !trigger)
     return message.channel.send(
-      await i18n(guildId, "commands.com.errors.no-trigger")
+      await t(guildId, "commands.com.errors.no-trigger")
     );
   else if (["add", "edit"].includes(action) && text.length < 1)
     return message.channel.send(
-      await i18n(guildId, "commands.com.errors.no-text")
+      await t(guildId, "commands.com.errors.no-text")
     );
   else if (!allowedActions.includes(action))
     return message.channel.send(
-      await i18n(guildId, "commands.com.errors.invalid-action")
+      await t(guildId, "commands.com.errors.invalid-action")
     );
 
   const commands = await Commands.build(message.guild.id, message);
