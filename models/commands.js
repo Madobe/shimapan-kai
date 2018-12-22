@@ -105,6 +105,14 @@ class Commands {
   }
 
   /**
+   * Returns the command if it exists.
+   * @param {string} name The command name.
+   */
+  get(name) {
+    return this.commands[name];
+  }
+
+  /**
    * Returns an array of all the commands available to the guild.
    */
   toArray() {

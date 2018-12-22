@@ -1,13 +1,14 @@
 /**
  * This event runs every time a message is received by the bot.
  */
-const { getGuildSettings, getGuildCommands } = require("../utils/storage");
+const Settings = require("../models/settings");
+const Commands = require("../models/commands");
 
 module.exports = async (client, message) => {
   if (message.author.bot) return;
 
-  const settings = getGuildSettings(message.guild.id);
-  const prefix = settings["prefix"] || "!";
+  const settings = await Settings.build(message.guild.id);
+  const prefix = settings.get("prefix") || "!";
 
   if (message.content.startsWith(prefix)) {
     const args = message.content
@@ -31,11 +32,11 @@ module.exports = async (client, message) => {
         return message.channel.send("Something went wrong.");
       }
     } else {
-      const commands = await getGuildCommands(message.guild.id);
+      const commands = await Commands.build(message.guild.id);
 
-      if (!commands[name]) return;
+      if (!commands.get(name)) return;
 
-      message.channel.send(commands[name]);
+      message.channel.send(commands.get(name));
     }
   }
 };

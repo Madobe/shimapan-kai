@@ -14,6 +14,19 @@
       "trigger-edited": "`{0}` was modified.",
       "trigger-removed": "`{0}` was removed."
     },
-    "ping": "Pong."
+    "ping": "Pong.",
+    "set": {
+      "errors": {
+        "no-key": "You must provide a setting to change the value of.",
+        "no-value": "You must provide a value for the setting."
+      },
+      "success": "`{0}` assigned a value of `{1}`."
+    },
+    "unset": {
+      "errors": {
+        "no-key": "You must provide a setting to remove the value of."
+      },
+      "success": "`{0}` unset."
+    }
   }
 }
