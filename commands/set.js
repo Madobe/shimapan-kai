@@ -1,11 +1,21 @@
 const Settings = require("../models/settings");
 const { i18n } = require("../utils/locale");
 
+/**
+ * Adds spaces to the string until it reaches the target length.
+ * @param {string} str The string to pad.
+ * @param {number} amount The target length of the string.
+ */
 const pad = (str, amount) => {
   if (!str) return " ".repeat(amount);
   return `${str}${" ".repeat(amount - str.length)}`;
 };
 
+/**
+ * Sets a guild configuration value.
+ * @param {string} key The setting to change.
+ * @param {string} value The value to assign to the setting.
+ */
 exports.run = async ({ message, args }) => {
   const settings = await Settings.build(message.guild.id);
   const [key, value] = args;
@@ -25,7 +35,17 @@ exports.run = async ({ message, args }) => {
     let output = "```haskell\n";
 
     output += separator;
-    output += `| ${pad("Option", 25)} | ${pad("Value", 25)} |\n`;
+
+    const leftHeader = pad(
+      await i18n(message.guild.id, "commands.set.option"),
+      25
+    );
+    const rightHeader = pad(
+      await i18n(message.guild.id, "commands.set.value"),
+      25
+    );
+
+    output += `| ${leftHeader} | ${rightHeader} |\n`;
     output += separator;
 
     const allowedSettings = await settings.allowedSettings();

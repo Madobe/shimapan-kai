@@ -1,5 +1,9 @@
 const Settings = require("../models/settings");
 
+/**
+ * Sends a message to every guild that has an announcements-channel set.
+ * @param {string} text The text to send to each channel.
+ */
 exports.run = async ({ client, message, args }) => {
   client.guilds.forEach(async guild => {
     const settings = await Settings.build(guild.id);

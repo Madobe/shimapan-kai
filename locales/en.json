@@ -15,11 +15,18 @@
       "trigger-removed": "`{0}` was removed."
     },
     "ping": "Pong.",
+    "prune": {
+      "errors": {
+        "no-amount": "You must specify the number of messages to delete."
+      }
+    },
     "set": {
       "errors": {
         "no-key": "You must provide a setting to change the value of.",
         "no-value": "You must provide a value for the setting."
       },
+      "option": "Option",
+      "value": "Value",
       "success": "`{0}` assigned a value of `{1}`."
     },
     "unset": {

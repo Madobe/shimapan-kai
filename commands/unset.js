@@ -1,6 +1,10 @@
 const Settings = require("../models/settings");
 const { i18n } = require("../utils/locale");
 
+/**
+ * Removes the value of the given setting.
+ * @param {string} key The setting to unset.
+ */
 exports.run = async ({ message, args }) => {
   const settings = await Settings.build(message.guild.id);
   const [key] = args;

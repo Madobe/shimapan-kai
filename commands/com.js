@@ -1,12 +1,27 @@
 const Commands = require("../models/commands");
 const { i18n } = require("../utils/locale");
 
+/**
+ * Adds a command.
+ * @param {Message} message A Discord.js Message object.
+ * @param {Snowflake} id A Guild ID snowflake.
+ * @param {Commands} commands A Commands model object.
+ * @param {string} trigger The custom command name.
+ * @param {string} text The response string.
+ */
 const addCommand = async (message, id, commands, trigger, text) => {
   commands.addCommand(trigger, text, async () => {
     message.channel.send(await i18n(id, "commands.com.trigger-added", trigger));
   });
 };
 
+/**
+ * Removes an existing command.
+ * @param {Message} message A Discord.js Message object.
+ * @param {Snowflake} id A Guild ID snowflake.
+ * @param {Commands} commands A Commands model object.
+ * @param {string} trigger The custom command name.
+ */
 const removeCommand = async (message, id, commands, trigger) => {
   commands.removeCommand(trigger, async () => {
     message.channel.send(
@@ -15,6 +30,14 @@ const removeCommand = async (message, id, commands, trigger) => {
   });
 };
 
+/**
+ * Edits an existing command's response string.
+ * @param {Message} message A Discord.js Message object.
+ * @param {Snowflake} id A Guild ID snowflake.
+ * @param {Commands} commands A Commands model object.
+ * @param {string} trigger The custom command name.
+ * @param {string} text The response string.
+ */
 const editCommand = async (message, id, commands, trigger, text) => {
   commands.editCommand(trigger, text, async () => {
     message.channel.send(
@@ -23,6 +46,12 @@ const editCommand = async (message, id, commands, trigger, text) => {
   });
 };
 
+/**
+ * Lists all available custom commands.
+ * @param {Message} message A Discord.js Message object.
+ * @param {Snowflake} id A Guild ID snowflake.
+ * @param {Commands} commands A Commands model object.
+ */
 const listCommands = async (message, id, commands) => {
   const keys = commands.toArray();
   let output = "";
@@ -35,6 +64,12 @@ const listCommands = async (message, id, commands) => {
   message.channel.send(await i18n(id, "commands.com.list", output));
 };
 
+/**
+ * Performs CRUD operations for custom commands.
+ * @param {string} action The type of action to perform.
+ * @param {string} trigger The custom command name.
+ * @param {string} text The response string.
+ */
 exports.run = async ({ message, args }) => {
   const [action, _trigger, ...text] = args;
   const trigger = (_trigger || "").toLowerCase();
